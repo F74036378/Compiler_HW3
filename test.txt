@@ -1,0 +1,7 @@
+int a;
+print(18*(1+2));
+print(a);
+print("Hello");
+int b;
+
+print(a*b);
