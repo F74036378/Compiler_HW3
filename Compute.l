@@ -14,7 +14,7 @@ Strin	"\""(((.)|([\n])|([\t])|([\r]))*)"\""
 space [ ]
 
 %%
-
+";"		{return SEM;}
 [0-9]+   	{ 
 			//printf("%s is a number \n", yytext); 			
 			sscanf(yytext,"%d",&yylval.intVal); 
@@ -25,7 +25,7 @@ space [ ]
 				return STR;
 		}
 {Int}		{
-				printf("Int\n");
+				
 				return INTNUM;
 		}
 [Pp][Rr][Ii][Nn][Tt]   {return PRI;}

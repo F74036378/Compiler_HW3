@@ -1,7 +1,2 @@
-int a;
-print(18*(1+2));
-print(a);
+int a = 0;
 print("Hello");
-int b;
-
-print(a*b);

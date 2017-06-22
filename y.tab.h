@@ -66,7 +66,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 29 "Compute.y" /* yacc.c:1909  */
+#line 31 "Compute.y" /* yacc.c:1909  */
 
 	int intVal;
 	char *ids;

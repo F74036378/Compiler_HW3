@@ -73,7 +73,7 @@ extern int yylex();
 void yyerror(char *);
 
 FILE *file;
-int indexa = 0;
+int indexa = -1;
 int index_max = 9;
 
 typedef struct arr{
@@ -84,13 +84,15 @@ typedef struct arr{
 node *sym;
 
 void create_sym();
-void insert_sym(char *, int);
+int insert_sym(char *);
 int check_sym(char*);
 int getval_sym(int);
+void ass_sym(int, int);
 void dump_sym();
+char* id_split(char*);
 
 
-#line 94 "y.tab.c" /* yacc.c:339  */
+#line 96 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -146,12 +148,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 29 "Compute.y" /* yacc.c:355  */
+#line 31 "Compute.y" /* yacc.c:355  */
 
 	int intVal;
 	char *ids;
 
-#line 155 "y.tab.c" /* yacc.c:355  */
+#line 157 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -168,7 +170,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 172 "y.tab.c" /* yacc.c:358  */
+#line 174 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -410,10 +412,10 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   36
+#define YYLAST   37
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  19
+#define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  10
 /* YYNRULES -- Number of rules.  */
@@ -437,9 +439,9 @@ static const yytype_uint8 yytranslate[] =
        9,     2,     2,    10,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      13,    14,    17,    15,     2,    16,     2,    18,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    11,
-       2,    12,     2,     2,     2,     2,     2,     2,     2,     2,
+      12,    13,    16,    14,     2,    15,     2,    17,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,    11,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -466,9 +468,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    42,    42,    44,    50,    58,    59,    60,    61,    64,
-      65,    68,    69,    71,    74,    75,    76,    80,    81,    82,
-      86,    87,    88,    92
+       0,    44,    44,    46,    49,    57,    58,    59,    60,    63,
+      76,    99,   105,   114,   117,   118,   119,   123,   124,   125,
+     129,   130,   139,   143
 };
 #endif
 
@@ -478,9 +480,9 @@ static const yytype_uint8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "NUMBER", "SEM", "STR", "ID", "INTNUM",
-  "PRI", "'\\n'", "'\\r'", "';'", "'='", "'('", "')'", "'+'", "'-'", "'*'",
-  "'/'", "$accept", "lines", "Stmt", "Decl", "Print", "Ari", "expression",
-  "term", "factor", "group", YY_NULLPTR
+  "PRI", "'\\n'", "'\\r'", "'='", "'('", "')'", "'+'", "'-'", "'*'", "'/'",
+  "$accept", "lines", "Stmt", "Decl", "Print", "Ari", "expression", "term",
+  "factor", "group", YY_NULLPTR
 };
 #endif
 
@@ -490,7 +492,7 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,    10,
-      13,    59,    61,    40,    41,    43,    45,    42,    47
+      13,    61,    40,    41,    43,    45,    42,    47
 };
 # endif
 
@@ -508,10 +510,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -11,     7,   -11,     9,     0,    11,     8,    16,    19,    20,
-      -1,    21,    -2,   -11,   -11,    23,   -11,   -11,   -11,   -11,
-     -11,    -1,     4,     5,   -11,   -11,    -1,    22,    -6,   -11,
-      -1,    -1,    -1,    -1,     4,   -11,   -11,     5,     5,   -11,
+     -11,     6,   -11,     4,    21,    16,     8,    25,    26,    27,
+      -1,    22,    -2,   -11,   -11,    23,   -11,   -11,   -11,   -11,
+     -11,    -1,     5,     7,   -11,   -11,    -1,    24,    -6,   -11,
+      -1,    -1,    -1,    -1,     5,   -11,   -11,     7,     7,   -11,
      -11
 };
 
@@ -530,7 +532,7 @@ static const yytype_uint8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -11,   -11,   -11,   -11,   -11,   -11,   -10,    -5,    -4,    29
+     -11,   -11,   -11,   -11,   -11,   -11,   -10,    -9,    -7,    29
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -544,37 +546,37 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      22,    19,    19,    27,    20,    20,    11,     2,    36,    30,
-      31,    21,    21,     3,     4,     5,    34,    14,    15,    30,
-      31,    10,    32,    33,    12,    37,    38,    16,    39,    40,
-      17,    18,    29,    26,    13,     0,    35
+      22,    19,    19,    27,    20,    20,     2,    36,    30,    31,
+      21,    21,     3,     4,     5,    10,    34,    14,    15,    30,
+      31,    37,    38,    32,    33,    39,    40,    11,    12,    16,
+      17,    18,    29,    26,    13,     0,     0,    35
 };
 
 static const yytype_int8 yycheck[] =
 {
-      10,     3,     3,     5,     6,     6,     6,     0,    14,    15,
-      16,    13,    13,     6,     7,     8,    26,     9,    10,    15,
-      16,    12,    17,    18,    13,    30,    31,    11,    32,    33,
-      11,    11,     9,    12,     5,    -1,    14
+      10,     3,     3,     5,     6,     6,     0,    13,    14,    15,
+      12,    12,     6,     7,     8,    11,    26,     9,    10,    14,
+      15,    30,    31,    16,    17,    32,    33,     6,    12,     4,
+       4,     4,     9,    11,     5,    -1,    -1,    13
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    20,     0,     6,     7,     8,    21,    22,    23,    24,
-      12,     6,    13,    28,     9,    10,    11,    11,    11,     3,
-       6,    13,    25,    26,    27,    28,    12,     5,    25,     9,
-      15,    16,    17,    18,    25,    14,    14,    26,    26,    27,
-      27
+       0,    19,     0,     6,     7,     8,    20,    21,    22,    23,
+      11,     6,    12,    27,     9,    10,     4,     4,     4,     3,
+       6,    12,    24,    25,    26,    27,    11,     5,    24,     9,
+      14,    15,    16,    17,    24,    13,    13,    25,    25,    26,
+      26
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    19,    20,    20,    20,    21,    21,    21,    21,    22,
-      22,    23,    23,    24,    25,    25,    25,    26,    26,    26,
-      27,    27,    27,    28
+       0,    18,    19,    19,    19,    20,    20,    20,    20,    21,
+      21,    22,    22,    23,    24,    24,    24,    25,    25,    25,
+      26,    26,    26,    27
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1259,137 +1261,187 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 44 "Compute.y" /* yacc.c:1646  */
+#line 46 "Compute.y" /* yacc.c:1646  */
     {
 					
-					fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
-							"swap		;swap the top two items on the stack \n"
-							"invokevirtual java/io/PrintStream/println(I)V\n" );
 				}
-#line 1270 "y.tab.c" /* yacc.c:1646  */
+#line 1269 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 50 "Compute.y" /* yacc.c:1646  */
+#line 49 "Compute.y" /* yacc.c:1646  */
     {
                     
                     fprintf(file,   "getstatic java/lang/System/out Ljava/io/PrintStream;\n"
                             "swap       ;swap the top two items on the stack \n"
                             "invokevirtual java/io/PrintStream/println(I)V\n" );
                 }
-#line 1281 "y.tab.c" /* yacc.c:1646  */
+#line 1280 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 58 "Compute.y" /* yacc.c:1646  */
+#line 57 "Compute.y" /* yacc.c:1646  */
     {printf("decl\n");}
-#line 1287 "y.tab.c" /* yacc.c:1646  */
+#line 1286 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 59 "Compute.y" /* yacc.c:1646  */
+#line 58 "Compute.y" /* yacc.c:1646  */
     {printf("print\n");}
-#line 1293 "y.tab.c" /* yacc.c:1646  */
+#line 1292 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 60 "Compute.y" /* yacc.c:1646  */
+#line 59 "Compute.y" /* yacc.c:1646  */
     {printf("ari\n");}
-#line 1299 "y.tab.c" /* yacc.c:1646  */
+#line 1298 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 64 "Compute.y" /* yacc.c:1646  */
-    {printf("int id\n");}
-#line 1305 "y.tab.c" /* yacc.c:1646  */
+#line 63 "Compute.y" /* yacc.c:1646  */
+    {
+					char *sid = id_split((yyvsp[0].ids));
+					if(indexa != -1){
+						if(check_sym(sid) == -1){
+							insert_sym(sid);
+						}
+						else{yyerror("has declaed\n");}
+					}
+					else{
+						create_sym();
+						insert_sym(sid);
+					}
+				 }
+#line 1316 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 65 "Compute.y" /* yacc.c:1646  */
-    {printf("int id ass\n");}
-#line 1311 "y.tab.c" /* yacc.c:1646  */
+#line 76 "Compute.y" /* yacc.c:1646  */
+    {
+					char *sid =id_split((yyvsp[-2].ids));
+					printf("%s\n",sid);
+					printf("int id ass\n");
+					if(indexa != -1){
+						if(check_sym(sid) == -1){
+							int pp = insert_sym(sid);
+							ass_sym(pp, (yyvsp[0].intVal));
+							fprintf(file, "istore %d \n", pp);
+						}
+						else{yyerror("has declaed\n");}
+					}
+					else{
+						create_sym();
+						int pp = insert_sym(sid);
+						printf("%s\n",sym[0].id);
+						ass_sym(pp, (yyvsp[0].intVal));
+						fprintf(file, "istore %d \n",pp);
+					}
+					
+				 }
+#line 1342 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 68 "Compute.y" /* yacc.c:1646  */
-    {printf("print gup\n");}
-#line 1317 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 69 "Compute.y" /* yacc.c:1646  */
-    {printf("print Str\n");}
-#line 1323 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 71 "Compute.y" /* yacc.c:1646  */
-    {printf("ass ari\n");}
-#line 1329 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 14:
-#line 74 "Compute.y" /* yacc.c:1646  */
-    { (yyval.intVal) = (yyvsp[0].intVal); }
-#line 1335 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 15:
-#line 75 "Compute.y" /* yacc.c:1646  */
-    {printf("Add  \n"); (yyval.intVal) = (yyvsp[-2].intVal) + (yyvsp[0].intVal); fprintf(file,"iadd \n");}
-#line 1341 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 76 "Compute.y" /* yacc.c:1646  */
-    {printf("Sub  \n"); (yyval.intVal) = (yyvsp[-2].intVal) - (yyvsp[0].intVal); fprintf(file,"isub \n");}
-#line 1347 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 80 "Compute.y" /* yacc.c:1646  */
-    { (yyval.intVal) = (yyvsp[0].intVal); }
+#line 99 "Compute.y" /* yacc.c:1646  */
+    {	printf("print gup\n");
+			fprintf(file, "ldc %d \n",(yyvsp[0].intVal));
+			fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
+				"swap		;swap the top two items on the stack \n"
+				"invokevirtual java/io/PrintStream/println(I)V\n" );
+			}
 #line 1353 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 12:
+#line 105 "Compute.y" /* yacc.c:1646  */
+    {		
+					char *st = (yyvsp[-1].ids);
+					st[strlen(st)-1] = '\n';
+					printf("print %s\n",st);
+					fprintf(file,"ldc %s \n",st);
+					fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
+							"swap		;swap the top two items on the stack \n"
+							"invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n" );
+			}
+#line 1367 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 114 "Compute.y" /* yacc.c:1646  */
+    {printf("ass ari\n");}
+#line 1373 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 14:
+#line 117 "Compute.y" /* yacc.c:1646  */
+    { (yyval.intVal) = (yyvsp[0].intVal); }
+#line 1379 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 15:
+#line 118 "Compute.y" /* yacc.c:1646  */
+    {printf("Add  \n"); (yyval.intVal) = (yyvsp[-2].intVal) + (yyvsp[0].intVal); fprintf(file,"iadd \n");}
+#line 1385 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 16:
+#line 119 "Compute.y" /* yacc.c:1646  */
+    {printf("Sub  \n"); (yyval.intVal) = (yyvsp[-2].intVal) - (yyvsp[0].intVal); fprintf(file,"isub \n");}
+#line 1391 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 123 "Compute.y" /* yacc.c:1646  */
+    { (yyval.intVal) = (yyvsp[0].intVal); }
+#line 1397 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 18:
-#line 81 "Compute.y" /* yacc.c:1646  */
+#line 124 "Compute.y" /* yacc.c:1646  */
     {printf("Mul  \n"); (yyval.intVal) = (yyvsp[-2].intVal) * (yyvsp[0].intVal); fprintf(file,"imul \n");}
-#line 1359 "y.tab.c" /* yacc.c:1646  */
+#line 1403 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 82 "Compute.y" /* yacc.c:1646  */
+#line 125 "Compute.y" /* yacc.c:1646  */
     {printf("Div  \n"); (yyval.intVal) = (yyvsp[-2].intVal) / (yyvsp[0].intVal); fprintf(file,"idiv \n");}
-#line 1365 "y.tab.c" /* yacc.c:1646  */
+#line 1409 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 86 "Compute.y" /* yacc.c:1646  */
+#line 129 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); fprintf(file,"ldc %d\n" , (yyvsp[0].intVal));}
-#line 1371 "y.tab.c" /* yacc.c:1646  */
+#line 1415 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 87 "Compute.y" /* yacc.c:1646  */
-    {printf("%s\n",(yyvsp[0].ids));fprintf(file,"iload %s\n", (yyvsp[0].ids));}
-#line 1377 "y.tab.c" /* yacc.c:1646  */
+#line 130 "Compute.y" /* yacc.c:1646  */
+    {
+			char *sid = id_split((yyvsp[0].ids));
+			int pp = check_sym(sid);
+			if(pp == -1){yyerror("not declared\n");}
+			else{
+				fprintf(file,"iload %d\n", pp);
+				(yyval.intVal) = getval_sym(pp);
+			}
+	      }
+#line 1429 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 88 "Compute.y" /* yacc.c:1646  */
+#line 139 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); fprintf(file,"ldc %d\n" , (yyvsp[0].intVal));}
-#line 1383 "y.tab.c" /* yacc.c:1646  */
+#line 1435 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 92 "Compute.y" /* yacc.c:1646  */
+#line 143 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[-1].intVal); }
-#line 1389 "y.tab.c" /* yacc.c:1646  */
+#line 1441 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1393 "y.tab.c" /* yacc.c:1646  */
+#line 1445 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1617,7 +1669,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 95 "Compute.y" /* yacc.c:1906  */
+#line 146 "Compute.y" /* yacc.c:1906  */
 
 int main(int argc, char** argv)
 {
@@ -1637,6 +1689,7 @@ int main(int argc, char** argv)
 		     	".end method\n");
 	
 	fclose(file);
+	dump_sym();
 	printf("Generated: %s\n","Computer.j");
 
     	return 0;
@@ -1648,27 +1701,28 @@ void yyerror(char *s) {
 }
 
 void create_sym(){
-    sym = malloc(sizeof(node)*10);	
+    printf("Create Symbol Table\n");
+    sym = malloc(sizeof(node)*10);
+    indexa = 0;
 }
 
-void insert_sym(char *id, int val){
+int insert_sym(char *id){
 	int i,n = 0;
 	for(i=0;i<indexa;i++){
 		if(!strcmp(sym[i].id, id)){
-			sym[i].value = val;
 			n = 1;
-			break;
+			return -1;
 		}
 	}
 	if(n != 1){
 		sym[indexa].id = id;
-		sym[indexa].value = val;
 		if(indexa == index_max){
 			sym = realloc(sym, (index_max+11)*sizeof(node));
 			index_max += 10;
 		}
 		indexa++;
 	}
+	return indexa-1;
 }
 
 int check_sym(char *id){
@@ -1685,4 +1739,19 @@ int getval_sym(int num){
 	return sym[num].value;
 }
 
-void dump_sym(){}
+void ass_sym(int locate, int val){
+	sym[locate].value = val;
+}
+
+void dump_sym(){
+	int i;
+	printf("Symbol Table\n");
+	for(i=0;i<indexa;i++){
+		printf("%d %s %d\n", i, sym[i].id, sym[i].value);
+	}
+}
+
+char* id_split(char *id){
+	char deli[] = " \t\n\r\v\f";
+	return strtok(id, deli);
+}
