@@ -44,19 +44,14 @@ char* id_split(char*);
 lines
     :
     | lines Stmt '\n'  	{
-					
-				}
-    | lines Stmt '\r' '\n'     {
-                    
-                    fprintf(file,   "getstatic java/lang/System/out Ljava/io/PrintStream;\n"
-                            "swap       ;swap the top two items on the stack \n"
-                            "invokevirtual java/io/PrintStream/println(I)V\n" );
-                }
-     ;
+			
+			}
+    | lines Stmt '\r' '\n'     {}
+    ;
 
-Stmt: Decl SEM {printf("decl\n");}
-    | Print SEM {printf("print\n");}
-    | Ari  SEM {printf("ari\n");}
+Stmt: Decl SEM {}
+    | Print SEM {}
+    | Ari  SEM {}
     |
     ;
 
@@ -66,7 +61,7 @@ Decl: INTNUM ID                  {
 						if(check_sym(sid) == -1){
 							insert_sym(sid);
 						}
-						else{yyerror("has declaed\n");}
+						else{printf("%s has been declaed.\n",sid);}
 					}
 					else{
 						create_sym();
@@ -75,28 +70,25 @@ Decl: INTNUM ID                  {
 				 }
     | INTNUM ID '=' expression   {
 					char *sid =id_split($2);
-					printf("%s\n",sid);
-					printf("int id ass\n");
 					if(indexa != -1){
 						if(check_sym(sid) == -1){
 							int pp = insert_sym(sid);
 							ass_sym(pp, $4);
 							fprintf(file, "istore %d \n", pp);
 						}
-						else{yyerror("has declaed\n");}
+						else{printf("%s has been declaed.\n",sid);}
 					}
 					else{
 						create_sym();
 						int pp = insert_sym(sid);
-						printf("%s\n",sym[0].id);
 						ass_sym(pp, $4);
 						fprintf(file, "istore %d \n",pp);
-					}
+				}
 					
 				 }
     ;
 
-Print: PRI group   {	printf("print gup\n");
+Print: PRI group   {	printf("Print : %d\n",$2);
 			fprintf(file, "ldc %d \n",$2);
 			fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
 				"swap		;swap the top two items on the stack \n"
@@ -105,13 +97,23 @@ Print: PRI group   {	printf("print gup\n");
      | PRI '(' STR ')'   {		
 					char *st = $3;
 					st[strlen(st)-1] = '\n';
-					printf("print %s\n",st);
+					printf("Print : %s\n",st);
 					fprintf(file,"ldc %s \n",st);
 					fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
 							"swap		;swap the top two items on the stack \n"
 							"invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n" );
 			}
-Ari: ID '=' expression   {printf("ass ari\n");}
+Ari: ID '=' expression   {
+				printf("Assign\n");
+				char *sid = id_split($1);
+				int pp = check_sym(sid);
+				if(pp == -1){printf("%s has not been declared.\n",sid);}
+				else{
+					ass_sym(pp, $3);
+					fprintf(file, "istore %d\n",pp);
+				}
+			 }
+   ;
 
 expression
     : term   { $$ = $1; }
@@ -130,7 +132,7 @@ factor
     | ID      {
 			char *sid = id_split($1);
 			int pp = check_sym(sid);
-			if(pp == -1){yyerror("not declared\n");}
+			if(pp == -1){printf("%s is not declared.\n",sid);}
 			else{
 				fprintf(file,"iload %d\n", pp);
 				$$ = getval_sym(pp);
@@ -147,7 +149,7 @@ group
 int main(int argc, char** argv)
 {
 
-	file = fopen("Computer.j","w");
+	file = fopen("Assignment_3.j","w");
 	
 	fprintf(file,	".class public main\n"
 		     	".super java/lang/Object\n"
@@ -162,6 +164,7 @@ int main(int argc, char** argv)
 		     	".end method\n");
 	
 	fclose(file);
+	printf("Total lines : %d\n",yylineno);
 	dump_sym();
 	printf("Generated: %s\n","Computer.j");
 
@@ -195,6 +198,7 @@ int insert_sym(char *id){
 		}
 		indexa++;
 	}
+	printf("Insert symbol: %s\n",id);
 	return indexa-1;
 }
 
@@ -219,12 +223,13 @@ void ass_sym(int locate, int val){
 void dump_sym(){
 	int i;
 	printf("Symbol Table\n");
+	printf("Number\tID\tData\n");
 	for(i=0;i<indexa;i++){
-		printf("%d %s %d\n", i, sym[i].id, sym[i].value);
+		printf("%d\t%s\t%d\n", i, sym[i].id, sym[i].value);
 	}
 }
 
 char* id_split(char *id){
-	char deli[] = " \t\n\r\v\f";
+	char deli[] = " \t\n\r\v\f;";
 	return strtok(id, deli);
 }

@@ -15,6 +15,7 @@ space [ ]
 
 %%
 ";"		{return SEM;}
+
 [0-9]+   	{ 
 			//printf("%s is a number \n", yytext); 			
 			sscanf(yytext,"%d",&yylval.intVal); 

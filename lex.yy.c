@@ -774,7 +774,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 18 "Compute.l"
+#line 19 "Compute.l"
 { 
 			//printf("%s is a number \n", yytext); 			
 			sscanf(yytext,"%d",&yylval.intVal); 
@@ -784,7 +784,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 23 "Compute.l"
+#line 24 "Compute.l"
 {	
 				yylval.ids = yytext;
 				return STR;
@@ -792,7 +792,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 27 "Compute.l"
+#line 28 "Compute.l"
 {
 				
 				return INTNUM;
@@ -800,12 +800,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 31 "Compute.l"
+#line 32 "Compute.l"
 {return PRI;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 33 "Compute.l"
+#line 34 "Compute.l"
 {
 			yylval.ids = yytext;
 			return ID;
@@ -814,22 +814,22 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 37 "Compute.l"
+#line 38 "Compute.l"
 { yylineno++; return '\n';}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 38 "Compute.l"
+#line 39 "Compute.l"
 ;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 40 "Compute.l"
+#line 41 "Compute.l"
 { return yytext[0]; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 42 "Compute.l"
+#line 43 "Compute.l"
 ECHO;
 	YY_BREAK
 #line 836 "lex.yy.c"
@@ -1833,7 +1833,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 42 "Compute.l"
+#line 43 "Compute.l"
 
 
 int yywrap()

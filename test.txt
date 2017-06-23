@@ -1,2 +1,4 @@
 int a = 0;
-print("Hello");
+int b;
+int c = 1;
+b = 2;

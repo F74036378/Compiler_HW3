@@ -110,10 +110,7 @@ char* id_split(char*);
 # define YYERROR_VERBOSE 0
 #endif
 
-/* In a future release of Bison, this section will be replaced
-   by #include "y.tab.h".  */
-#ifndef YY_YY_Y_TAB_H_INCLUDED
-# define YY_YY_Y_TAB_H_INCLUDED
+
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -153,7 +150,7 @@ union YYSTYPE
 	int intVal;
 	char *ids;
 
-#line 157 "y.tab.c" /* yacc.c:355  */
+#line 154 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -166,11 +163,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
+
 
 /* Copy the second part of user declarations.  */
 
-#line 174 "y.tab.c" /* yacc.c:358  */
+#line 171 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -468,9 +465,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    44,    44,    46,    49,    57,    58,    59,    60,    63,
-      76,    99,   105,   114,   117,   118,   119,   123,   124,   125,
-     129,   130,   139,   143
+       0,    44,    44,    46,    49,    52,    53,    54,    55,    58,
+      71,    91,    97,   106,   119,   120,   121,   125,   126,   127,
+     131,   132,   141,   145
 };
 #endif
 
@@ -1263,185 +1260,186 @@ yyreduce:
         case 3:
 #line 46 "Compute.y" /* yacc.c:1646  */
     {
-					
-				}
-#line 1269 "y.tab.c" /* yacc.c:1646  */
+			
+			}
+#line 1266 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 49 "Compute.y" /* yacc.c:1646  */
-    {
-                    
-                    fprintf(file,   "getstatic java/lang/System/out Ljava/io/PrintStream;\n"
-                            "swap       ;swap the top two items on the stack \n"
-                            "invokevirtual java/io/PrintStream/println(I)V\n" );
-                }
-#line 1280 "y.tab.c" /* yacc.c:1646  */
+    {}
+#line 1272 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 57 "Compute.y" /* yacc.c:1646  */
-    {printf("decl\n");}
-#line 1286 "y.tab.c" /* yacc.c:1646  */
+#line 52 "Compute.y" /* yacc.c:1646  */
+    {}
+#line 1278 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 58 "Compute.y" /* yacc.c:1646  */
-    {printf("print\n");}
-#line 1292 "y.tab.c" /* yacc.c:1646  */
+#line 53 "Compute.y" /* yacc.c:1646  */
+    {}
+#line 1284 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 59 "Compute.y" /* yacc.c:1646  */
-    {printf("ari\n");}
-#line 1298 "y.tab.c" /* yacc.c:1646  */
+#line 54 "Compute.y" /* yacc.c:1646  */
+    {}
+#line 1290 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 63 "Compute.y" /* yacc.c:1646  */
+#line 58 "Compute.y" /* yacc.c:1646  */
     {
 					char *sid = id_split((yyvsp[0].ids));
 					if(indexa != -1){
 						if(check_sym(sid) == -1){
 							insert_sym(sid);
 						}
-						else{yyerror("has declaed\n");}
+						else{printf("%s has been declaed.\n",sid);}
 					}
 					else{
 						create_sym();
 						insert_sym(sid);
 					}
 				 }
-#line 1316 "y.tab.c" /* yacc.c:1646  */
+#line 1308 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 76 "Compute.y" /* yacc.c:1646  */
+#line 71 "Compute.y" /* yacc.c:1646  */
     {
 					char *sid =id_split((yyvsp[-2].ids));
-					printf("%s\n",sid);
-					printf("int id ass\n");
 					if(indexa != -1){
 						if(check_sym(sid) == -1){
 							int pp = insert_sym(sid);
 							ass_sym(pp, (yyvsp[0].intVal));
 							fprintf(file, "istore %d \n", pp);
 						}
-						else{yyerror("has declaed\n");}
+						else{printf("%s has been declaed.\n",sid);}
 					}
 					else{
 						create_sym();
 						int pp = insert_sym(sid);
-						printf("%s\n",sym[0].id);
 						ass_sym(pp, (yyvsp[0].intVal));
 						fprintf(file, "istore %d \n",pp);
-					}
+				}
 					
 				 }
-#line 1342 "y.tab.c" /* yacc.c:1646  */
+#line 1331 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 99 "Compute.y" /* yacc.c:1646  */
-    {	printf("print gup\n");
+#line 91 "Compute.y" /* yacc.c:1646  */
+    {	printf("Print : %d\n",(yyvsp[0].intVal));
 			fprintf(file, "ldc %d \n",(yyvsp[0].intVal));
 			fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
 				"swap		;swap the top two items on the stack \n"
 				"invokevirtual java/io/PrintStream/println(I)V\n" );
 			}
-#line 1353 "y.tab.c" /* yacc.c:1646  */
+#line 1342 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 105 "Compute.y" /* yacc.c:1646  */
+#line 97 "Compute.y" /* yacc.c:1646  */
     {		
 					char *st = (yyvsp[-1].ids);
 					st[strlen(st)-1] = '\n';
-					printf("print %s\n",st);
+					printf("Print : %s\n",st);
 					fprintf(file,"ldc %s \n",st);
 					fprintf(file,	"getstatic java/lang/System/out Ljava/io/PrintStream;\n"
 							"swap		;swap the top two items on the stack \n"
 							"invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n" );
 			}
-#line 1367 "y.tab.c" /* yacc.c:1646  */
+#line 1356 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 114 "Compute.y" /* yacc.c:1646  */
-    {printf("ass ari\n");}
-#line 1373 "y.tab.c" /* yacc.c:1646  */
+#line 106 "Compute.y" /* yacc.c:1646  */
+    {
+				printf("Assign\n");
+				char *sid = id_split((yyvsp[-2].ids));
+				int pp = check_sym(sid);
+				if(pp == -1){printf("%s has not been declared.\n",sid);}
+				else{
+					ass_sym(pp, (yyvsp[0].intVal));
+					fprintf(file, "istore %d\n",pp);
+				}
+			 }
+#line 1371 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 117 "Compute.y" /* yacc.c:1646  */
+#line 119 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); }
-#line 1379 "y.tab.c" /* yacc.c:1646  */
+#line 1377 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 118 "Compute.y" /* yacc.c:1646  */
+#line 120 "Compute.y" /* yacc.c:1646  */
     {printf("Add  \n"); (yyval.intVal) = (yyvsp[-2].intVal) + (yyvsp[0].intVal); fprintf(file,"iadd \n");}
-#line 1385 "y.tab.c" /* yacc.c:1646  */
+#line 1383 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 119 "Compute.y" /* yacc.c:1646  */
+#line 121 "Compute.y" /* yacc.c:1646  */
     {printf("Sub  \n"); (yyval.intVal) = (yyvsp[-2].intVal) - (yyvsp[0].intVal); fprintf(file,"isub \n");}
-#line 1391 "y.tab.c" /* yacc.c:1646  */
+#line 1389 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 123 "Compute.y" /* yacc.c:1646  */
+#line 125 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); }
-#line 1397 "y.tab.c" /* yacc.c:1646  */
+#line 1395 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 124 "Compute.y" /* yacc.c:1646  */
+#line 126 "Compute.y" /* yacc.c:1646  */
     {printf("Mul  \n"); (yyval.intVal) = (yyvsp[-2].intVal) * (yyvsp[0].intVal); fprintf(file,"imul \n");}
-#line 1403 "y.tab.c" /* yacc.c:1646  */
+#line 1401 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 125 "Compute.y" /* yacc.c:1646  */
+#line 127 "Compute.y" /* yacc.c:1646  */
     {printf("Div  \n"); (yyval.intVal) = (yyvsp[-2].intVal) / (yyvsp[0].intVal); fprintf(file,"idiv \n");}
-#line 1409 "y.tab.c" /* yacc.c:1646  */
+#line 1407 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 129 "Compute.y" /* yacc.c:1646  */
+#line 131 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); fprintf(file,"ldc %d\n" , (yyvsp[0].intVal));}
-#line 1415 "y.tab.c" /* yacc.c:1646  */
+#line 1413 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 130 "Compute.y" /* yacc.c:1646  */
+#line 132 "Compute.y" /* yacc.c:1646  */
     {
 			char *sid = id_split((yyvsp[0].ids));
 			int pp = check_sym(sid);
-			if(pp == -1){yyerror("not declared\n");}
+			if(pp == -1){printf("%s is not declared.\n",sid);}
 			else{
 				fprintf(file,"iload %d\n", pp);
 				(yyval.intVal) = getval_sym(pp);
 			}
 	      }
-#line 1429 "y.tab.c" /* yacc.c:1646  */
+#line 1427 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 139 "Compute.y" /* yacc.c:1646  */
+#line 141 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[0].intVal); fprintf(file,"ldc %d\n" , (yyvsp[0].intVal));}
-#line 1435 "y.tab.c" /* yacc.c:1646  */
+#line 1433 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 143 "Compute.y" /* yacc.c:1646  */
+#line 145 "Compute.y" /* yacc.c:1646  */
     { (yyval.intVal) = (yyvsp[-1].intVal); }
-#line 1441 "y.tab.c" /* yacc.c:1646  */
+#line 1439 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1445 "y.tab.c" /* yacc.c:1646  */
+#line 1443 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1669,12 +1667,12 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 146 "Compute.y" /* yacc.c:1906  */
+#line 148 "Compute.y" /* yacc.c:1906  */
 
 int main(int argc, char** argv)
 {
 
-	file = fopen("Computer.j","w");
+	file = fopen("Assignment_3.j","w");
 	
 	fprintf(file,	".class public main\n"
 		     	".super java/lang/Object\n"
@@ -1689,6 +1687,7 @@ int main(int argc, char** argv)
 		     	".end method\n");
 	
 	fclose(file);
+	printf("Total lines : %d\n",yylineno);
 	dump_sym();
 	printf("Generated: %s\n","Computer.j");
 
@@ -1722,6 +1721,7 @@ int insert_sym(char *id){
 		}
 		indexa++;
 	}
+	printf("Insert symbol: %s\n",id);
 	return indexa-1;
 }
 
@@ -1746,12 +1746,13 @@ void ass_sym(int locate, int val){
 void dump_sym(){
 	int i;
 	printf("Symbol Table\n");
+	printf("Number\tID\tData\n");
 	for(i=0;i<indexa;i++){
-		printf("%d %s %d\n", i, sym[i].id, sym[i].value);
+		printf("%d\t%s\t%d\n", i, sym[i].id, sym[i].value);
 	}
 }
 
 char* id_split(char *id){
-	char deli[] = " \t\n\r\v\f";
+	char deli[] = " \t\n\r\v\f;";
 	return strtok(id, deli);
 }
